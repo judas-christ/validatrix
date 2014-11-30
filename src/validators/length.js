@@ -3,10 +3,11 @@ define(['validatrix'], function(){
     //>>excludeEnd("exclude");
 
     validatrix.validators.length = function(element, options) {
-      var maxLength = element.getAttribute('data-val-length-max');
-      var minLength = element.getAttribute('data-val-length-min');
+      var maxLength = Number(element.getAttribute('data-val-length-max')||void 0);
+      var minLength = Number(element.getAttribute('data-val-length-min')||void 0);
+      var errorMessage = element.getAttribute('data-val-length');
       return function(value) {
-        return value && value.length >= minLength && value.length <= maxLength;
+        return value && !((value.length >= minLength || !isFinite(minLength)) && (value.length <= maxLength || !isFinite(maxLength))) ? errorMessage : void 0;
       };
     };
 

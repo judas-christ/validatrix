@@ -4,8 +4,9 @@ define(['validatrix'], function(){
 
     validatrix.validators.number = function(element, options) {
       //TODO: localize . or ,?
+      var errorMessage = element.getAttribute('data-val-number');
       return function(value) {
-        return !value || isFinite(+value);
+        return value && !isFinite(+value) ? errorMessage : void 0;
       };
     };
 

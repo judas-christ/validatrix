@@ -2,6 +2,8 @@ var pkg = require('./package.json');
 var gulp = require('gulp');
 var plugins = require('gulp-load-plugins')();
 var del = require('del');
+var karma = require('karma').server;
+var path = require('path');
 
 var banner = '/*! <%= pkg.name %> - v<%= pkg.version %> */\n'
 
@@ -56,5 +58,12 @@ gulp.task('jshint', function() {
 gulp.task('clean', function(cb) {
     del('dist', cb);
 })
+
+gulp.task('test', function(cb) {
+    karma.start({
+        configFile: path.join(__dirname, 'karma.conf.js'),
+        singleRun: true
+    }, cb);
+});
 
 gulp.task('default', ['clean', 'jshint', 'dev', 'prod']);

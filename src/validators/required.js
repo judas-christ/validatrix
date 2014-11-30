@@ -3,8 +3,9 @@ define(['validatrix'], function(){
     //>>excludeEnd("exclude");
 
     validatrix.validators.required = function(element, options) {
+      var errorMessage = element.getAttribute('data-val-required');
       return function(value) {
-        return !!value;
+        return Boolean(value) ? void 0 : errorMessage;
       };
     };
 
