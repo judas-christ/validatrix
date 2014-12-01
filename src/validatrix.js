@@ -56,6 +56,7 @@ define([], function(){
                 if(valName in _validators) {
                     element.validatrix.push(_validators[valName](element, options));
                     if(!handlerAdded) {
+                        element.form.noValidate = true;
                         element.addEventListener('change', function(event) {
                             validateElement(event.target || event.srcElement, options);
                         }, false);

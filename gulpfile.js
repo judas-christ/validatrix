@@ -50,7 +50,7 @@ gulp.task('prod', ['jshint'], function() {
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('jshint', function() {
+gulp.task('jshint', ['clean'], function() {
     return gulp.src('src/**/*.js')
         .pipe(plugins.jshint())
 });
@@ -66,4 +66,4 @@ gulp.task('test', function(cb) {
     }, cb);
 });
 
-gulp.task('default', ['clean', 'jshint', 'dev', 'prod']);
+gulp.task('default', ['jshint', 'dev', 'prod']);
