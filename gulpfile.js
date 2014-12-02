@@ -66,4 +66,7 @@ gulp.task('test', function(cb) {
     }, cb);
 });
 
-gulp.task('default', ['jshint', 'dev', 'prod']);
+gulp.task('default', ['dev', 'prod'], function() {
+    gulp.watch('src/**/*.js', ['dev', 'prod']);
+    gulp.watch('test/**/*.spec.js', ['test']);
+});

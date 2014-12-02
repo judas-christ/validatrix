@@ -1,7 +1,7 @@
-/*! validatrix - v0.0.0 */
+/*! validatrix - v0.0.1 */
 (function(window, undefined){
 
-    var _options = {
+    var _defaultOptions = {
         validateAll: false,
         validateOnChange: true,
         oninvalid: void 0,
@@ -17,11 +17,11 @@
 
     function Validatrix(root, options) {
         var _myOptions = {};
-        for(var opt in _options) {
+        for(var opt in _defaultOptions) {
             if(options && options.hasOwnProperty(opt)) {
                 _myOptions[opt] = options[opt];
-            } else if(_options.hasOwnProperty(opt)) {
-                _myOptions[opt] = _options[opt];
+            } else if(_defaultOptions.hasOwnProperty(opt)) {
+                _myOptions[opt] = _defaultOptions[opt];
             }
         }
         this.options = _myOptions;
@@ -30,11 +30,6 @@
         for(var i=elementsToValidate.length;i--;) {
             initElement(elementsToValidate[i], _myOptions);
         }
-        // var form;
-        // for(var i=window.document.forms.length;i--;) {
-        //     form = window.document.forms[i];
-        //     form.addEventListener('submit', submitHandler, false);
-        // }
     }
 
     Validatrix.prototype = {
@@ -56,12 +51,14 @@
                     element.validatrix.push(_validators[valName](element, options));
                     if(!handlerAdded) {
                         element.form.noValidate = true;
-                        element.addEventListener('change', function(event) {
+                        addEventListener(element, 'change', function(event) {
+                            event = event || window.event;
                             validateElement(event.target || event.srcElement, options);
-                        }, false);
+                        });
                         handlerAdded = true;
                     }
-                } else {
+                }
+                else {
                     if(window.console) {
                         console.error('No validator found with name "' + valName + '"');
                     }
@@ -71,6 +68,10 @@
     }
 
     function init(root, options) {
+        if(typeof root === 'object' && !root instanceof Element) {
+            options = root;
+            root = undefined;
+        }
         return new Validatrix(root||document, options);
     }
 
@@ -107,12 +108,19 @@
         return !errorMessage;
     }
 
-    // function submitHandler(event) {
-    //     var form = event.target || event.srcElement;
-    //     if(!validateForm(form)) event.preventDefault();
-    // };
-
     window.validatrix = validatrix;
+
+
+
+    var addEventListenerExists = 'addEventListener' in Element.prototype;
+
+    function addEventListener(element, event, handler) {
+        if(addEventListenerExists) {
+            element.addEventListener(event, handler, false);
+        } else {
+            element.attachEvent('on' + event, handler);
+        }
+    }
 
 
 

@@ -2,7 +2,7 @@
 define([], function(){
     //>>excludeEnd("exclude");
 
-    var _options = {
+    var _defaultOptions = {
         validateAll: false,
         validateOnChange: true,
         oninvalid: void 0,
@@ -18,11 +18,11 @@ define([], function(){
 
     function Validatrix(root, options) {
         var _myOptions = {};
-        for(var opt in _options) {
+        for(var opt in _defaultOptions) {
             if(options && options.hasOwnProperty(opt)) {
                 _myOptions[opt] = options[opt];
-            } else if(_options.hasOwnProperty(opt)) {
-                _myOptions[opt] = _options[opt];
+            } else if(_defaultOptions.hasOwnProperty(opt)) {
+                _myOptions[opt] = _defaultOptions[opt];
             }
         }
         this.options = _myOptions;
@@ -31,11 +31,6 @@ define([], function(){
         for(var i=elementsToValidate.length;i--;) {
             initElement(elementsToValidate[i], _myOptions);
         }
-        // var form;
-        // for(var i=window.document.forms.length;i--;) {
-        //     form = window.document.forms[i];
-        //     form.addEventListener('submit', submitHandler, false);
-        // }
     }
 
     Validatrix.prototype = {
@@ -57,21 +52,29 @@ define([], function(){
                     element.validatrix.push(_validators[valName](element, options));
                     if(!handlerAdded) {
                         element.form.noValidate = true;
-                        element.addEventListener('change', function(event) {
+                        addEventListener(element, 'change', function(event) {
+                            event = event || window.event;
                             validateElement(event.target || event.srcElement, options);
-                        }, false);
+                        });
                         handlerAdded = true;
                     }
-                } else {
+                }
+//>>includeStart("development", pragmas.development);
+                else {
                     if(window.console) {
                         console.error('No validator found with name "' + valName + '"');
                     }
                 }
+//>>includeEnd("development");
             }
         }
     }
 
     function init(root, options) {
+        if(typeof root === 'object' && !root instanceof Element) {
+            options = root;
+            root = undefined;
+        }
         return new Validatrix(root||document, options);
     }
 
@@ -107,11 +110,6 @@ define([], function(){
         }
         return !errorMessage;
     }
-
-    // function submitHandler(event) {
-    //     var form = event.target || event.srcElement;
-    //     if(!validateForm(form)) event.preventDefault();
-    // };
 
     window.validatrix = validatrix;
 
