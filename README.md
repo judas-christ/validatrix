@@ -73,3 +73,14 @@ define(['validatrix'], function(){
 ```
 
 You can now validate fields with a `data-val-myvalidator="Invalid message for myvalidator"` attribute.
+
+#### Regular expression-based custom validators
+
+If your custom validator is easy to express as a regular expression, you can call the regex validator with an override pattern:
+
+```js
+validatrix.validators.myvalidator = function(element, options) {
+  var errorMessage = element.getAttribute('data-val-myvalidator');
+  return validatrix.validators.regex(element, options, 'myvalidator(?: pattern)?', errorMessage);
+};
+```
