@@ -1,6 +1,6 @@
 {
   "name": "validatrix",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Simple replacement for ASP.NET MVC unobtrusive validation",
   "main": "index.js",
   "dependencies": {},
