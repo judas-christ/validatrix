@@ -71,7 +71,7 @@ define([], function(){
     }
 
     function init(root, options) {
-        if(typeof root === 'object' && !root instanceof Element) {
+        if(typeof root === 'object' && !(root instanceof Element)) {
             options = root;
             root = undefined;
         }
