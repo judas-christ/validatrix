@@ -1,0 +1,23 @@
+{
+  "name": "validatrix",
+  "description": "Simple replacement for ASP.NET MVC unobtrusive validation",
+  "main": "dist/validatrix.js",
+  "authors": [
+    "Daniel Hägglund"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "validation"
+  ],
+  "homepage": "https://github.com/judas-christ/validatrix",
+  "moduleType": [
+    "globals"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
