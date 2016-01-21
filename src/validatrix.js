@@ -43,6 +43,12 @@ define([], function(){
 
         element.validatrix = [];
         var attr, valName, handlerAdded = false;
+
+        function changeHandler(event) {
+            event = event || window.event;
+            validateElement(event.target || event.srcElement, options);
+        }
+
         for(var i=element.attributes.length;i--;) {
             attr = element.attributes[i];
             valName = _validatorRegex.exec(attr.name);
@@ -52,10 +58,7 @@ define([], function(){
                     element.validatrix.push(_validators[valName](element, options));
                     if(!handlerAdded) {
                         element.form.noValidate = true;
-                        addEventListener(element, 'change', function(event) {
-                            event = event || window.event;
-                            validateElement(event.target || event.srcElement, options);
-                        });
+                        addEventListener(element, 'change', changeHandler);
                         handlerAdded = true;
                     }
                 }

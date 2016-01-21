@@ -1,11 +1,11 @@
 var pkg = require('./package.json');
 var gulp = require('gulp');
 var plugins = require('gulp-load-plugins')();
-var del = require('del');
-var karma = require('karma').server;
+var rimraf = require('rimraf');
+var Server = require('karma').Server;
 var path = require('path');
 
-var banner = '/*! <%= pkg.name %> - v<%= pkg.version %> */\n'
+var banner = '/*! <%= pkg.name %> - v<%= pkg.version %> */\n';
 
 gulp.task('dev', ['jshint'], function() {
     return plugins.requirejs({
@@ -53,17 +53,18 @@ gulp.task('prod', ['jshint'], function() {
 gulp.task('jshint', ['clean'], function() {
     return gulp.src('src/**/*.js')
         .pipe(plugins.jshint())
+        .pipe(plugins.jshint.reporter('default'));
 });
 
 gulp.task('clean', function(cb) {
-    del('dist', cb);
-})
+    rimraf('dist', cb);
+});
 
 gulp.task('test', function(cb) {
-    karma.start({
+    new Server({
         configFile: path.join(__dirname, 'karma.conf.js'),
         singleRun: true
-    }, cb);
+    }, cb).start();
 });
 
 gulp.task('default', ['dev', 'prod'], function() {

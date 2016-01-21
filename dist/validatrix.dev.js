@@ -1,4 +1,4 @@
-/*! validatrix - v0.0.1 */
+/*! validatrix - v0.0.2 */
 (function(window, undefined){
 
     var _defaultOptions = {
@@ -42,6 +42,12 @@
 
         element.validatrix = [];
         var attr, valName, handlerAdded = false;
+
+        function changeHandler(event) {
+            event = event || window.event;
+            validateElement(event.target || event.srcElement, options);
+        };;
+
         for(var i=element.attributes.length;i--;) {
             attr = element.attributes[i];
             valName = _validatorRegex.exec(attr.name);
@@ -51,10 +57,7 @@
                     element.validatrix.push(_validators[valName](element, options));
                     if(!handlerAdded) {
                         element.form.noValidate = true;
-                        addEventListener(element, 'change', function(event) {
-                            event = event || window.event;
-                            validateElement(event.target || event.srcElement, options);
-                        });
+                        addEventListener(element, 'change', changeHandler);
                         handlerAdded = true;
                     }
                 }
@@ -68,7 +71,7 @@
     }
 
     function init(root, options) {
-        if(typeof root === 'object' && !root instanceof Element) {
+        if(typeof root === 'object' && !(root instanceof Element)) {
             options = root;
             root = undefined;
         }
